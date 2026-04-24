@@ -240,7 +240,13 @@ TEST(select_outputs, exact_unlock_block)
 
   // if too low we may fail by not picking exact block
   // if too high test is not as sensitive as it could be
-  constexpr size_t NUM_PICK_TESTS = 1 << 20;
+  //
+  // ZillHa: CRYPTONOTE_DEFAULT_TX_SPENDABLE_AGE went 10 -> 40 to hold the
+  // ~20 min wall-clock spendability window at 30s blocks. The exact-unlock
+  // block is now 4x further from tip, so the gamma's probability of landing
+  // in that single output window drops roughly 4x. Bump iterations 4x to
+  // restore the original hit rate.
+  constexpr size_t NUM_PICK_TESTS = 1 << 22;
 
   bool picked_exact_unlock_block = false;
   for (size_t i = 0; i < NUM_PICK_TESTS; ++i)
