@@ -164,6 +164,12 @@ TEST(parse_and_validate_tx_extra, fails_on_wrong_size_in_extra_nonce)
 }
 TEST(validate_parse_amount_case, validate_parse_amount)
 {
+  // parse_amount uses the process-global default_decimal_point. Earlier tests
+  // in the suite may have loaded wallet files whose stored decimal_point
+  // overrode it. Pin it to the current config so this test is independent
+  // of test ordering.
+  cryptonote::set_default_decimal_point(CRYPTONOTE_DISPLAY_DECIMAL_POINT);
+
   uint64_t res = 0;
   bool r = cryptonote::parse_amount(res, "0.0001");
   ASSERT_TRUE(r);

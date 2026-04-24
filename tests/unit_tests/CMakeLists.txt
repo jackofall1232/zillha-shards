@@ -152,3 +152,8 @@ add_test(
 monero_add_minimal_executable(test_notifier test_notifier.cpp)
 target_link_libraries(test_notifier ${EXTRA_LIBRARIES})
 set_property(TARGET test_notifier PROPERTY FOLDER "tests")
+
+# notify.works invokes this helper binary at test time, so it must exist
+# whenever unit_tests runs. Make test_notifier a prerequisite of unit_tests
+# so `cmake --build --target unit_tests` (and ctest) always picks it up.
+add_dependencies(unit_tests test_notifier)
