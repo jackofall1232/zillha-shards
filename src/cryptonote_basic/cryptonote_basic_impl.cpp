@@ -81,15 +81,30 @@ namespace cryptonote {
   }
   //-----------------------------------------------------------------------------------------------
   bool get_block_reward(size_t median_weight, size_t current_block_weight, uint64_t already_generated_coins, uint64_t &reward, uint8_t version) {
-    static_assert(DIFFICULTY_TARGET_V2%60==0&&DIFFICULTY_TARGET_V1%60==0,"difficulty targets must be a multiple of 60");
+    static_assert(DIFFICULTY_TARGET_V1 % 60 == 0,
+                  "V1 difficulty target must be a multiple of 60");
+    static_assert(DIFFICULTY_TARGET_V2 == 30 || DIFFICULTY_TARGET_V2 % 60 == 0,
+                  "V2 difficulty target must be 30 or a multiple of 60");
     const int target = version < 2 ? DIFFICULTY_TARGET_V1 : DIFFICULTY_TARGET_V2;
-    const int target_minutes = target / 60;
-    const int emission_speed_factor = EMISSION_SPEED_FACTOR_PER_MINUTE - (target_minutes-1);
+
+    int emission_speed_factor;
+    uint64_t tail_floor;
+    if (target >= 60) {
+      const int target_minutes = target / 60;
+      emission_speed_factor = EMISSION_SPEED_FACTOR_PER_MINUTE - (target_minutes - 1);
+      tail_floor = FINAL_SUBSIDY_PER_MINUTE * target_minutes;
+    } else {
+      const int blocks_per_minute = 60 / target;
+      int k = 0;
+      for (int x = blocks_per_minute; x > 1; x >>= 1) ++k;
+      emission_speed_factor = EMISSION_SPEED_FACTOR_PER_MINUTE + k;
+      tail_floor = FINAL_SUBSIDY_PER_MINUTE / blocks_per_minute;
+    }
 
     uint64_t base_reward = (MONEY_SUPPLY - already_generated_coins) >> emission_speed_factor;
-    if (base_reward < FINAL_SUBSIDY_PER_MINUTE*target_minutes)
+    if (base_reward < tail_floor)
     {
-      base_reward = FINAL_SUBSIDY_PER_MINUTE*target_minutes;
+      base_reward = tail_floor;
     }
 
     uint64_t full_reward_zone = get_min_block_weight(version);

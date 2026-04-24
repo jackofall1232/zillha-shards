@@ -41,14 +41,14 @@
 #define CRYPTONOTE_MAX_TX_SIZE                          1000000
 #define CRYPTONOTE_MAX_TX_PER_BLOCK                     0x10000000
 #define CRYPTONOTE_PUBLIC_ADDRESS_TEXTBLOB_VER          0
-#define CRYPTONOTE_MINED_MONEY_UNLOCK_WINDOW            60
+#define CRYPTONOTE_MINED_MONEY_UNLOCK_WINDOW            240
 #define CURRENT_TRANSACTION_VERSION                     2
 #define CURRENT_BLOCK_MAJOR_VERSION                     1
 #define CURRENT_BLOCK_MINOR_VERSION                     0
 #define CRYPTONOTE_BLOCK_FUTURE_TIME_LIMIT              60*60*2
-#define CRYPTONOTE_DEFAULT_TX_SPENDABLE_AGE             10
+#define CRYPTONOTE_DEFAULT_TX_SPENDABLE_AGE             40
 
-#define BLOCKCHAIN_TIMESTAMP_CHECK_WINDOW               60
+#define BLOCKCHAIN_TIMESTAMP_CHECK_WINDOW               240
 
 // MONEY_SUPPLY - total number coins to be generated
 #define MONEY_SUPPLY                                    ((uint64_t)(-1))
@@ -62,9 +62,9 @@
 #define CRYPTONOTE_LONG_TERM_BLOCK_WEIGHT_WINDOW_SIZE   100000 // size in blocks of the long term block weight median window
 #define CRYPTONOTE_SHORT_TERM_BLOCK_WEIGHT_SURGE_FACTOR 50
 #define CRYPTONOTE_COINBASE_BLOB_RESERVED_SIZE          600
-#define CRYPTONOTE_DISPLAY_DECIMAL_POINT                12
-// COIN - number of smallest units in one coin
-#define COIN                                            ((uint64_t)1000000000000) // pow(10, 12)
+#define CRYPTONOTE_DISPLAY_DECIMAL_POINT                13
+// COIN - number of smallest units in one coin (1 Shard = 10^13 zest)
+#define COIN                                            ((uint64_t)10000000000000) // pow(10, 13)
 
 #define FEE_PER_KB_OLD                                  ((uint64_t)10000000000) // pow(10, 10)
 #define FEE_PER_KB                                      ((uint64_t)2000000000) // 2 * pow(10, 9)
@@ -77,9 +77,9 @@
 #define ORPHANED_BLOCKS_MAX_COUNT                       100
 
 
-#define DIFFICULTY_TARGET_V2                            120  // seconds
-#define DIFFICULTY_TARGET_V1                            60  // seconds - before first fork
-#define DIFFICULTY_WINDOW                               720 // blocks
+#define DIFFICULTY_TARGET_V2                            30   // seconds
+#define DIFFICULTY_TARGET_V1                            60   // seconds - before first fork (legacy, no blocks)
+#define DIFFICULTY_WINDOW                               2880 // blocks (~1 day at 30s)
 #define DIFFICULTY_LAG                                  15  // !!!
 #define DIFFICULTY_CUT                                  60  // timestamps to cut after sorting
 #define DIFFICULTY_BLOCKS_COUNT                         DIFFICULTY_WINDOW + DIFFICULTY_LAG
@@ -165,7 +165,7 @@
 
 #define RPC_IP_FAILS_BEFORE_BLOCK                       3
 
-#define CRYPTONOTE_NAME                         "battleground"
+#define CRYPTONOTE_NAME                         "zillha-shards"
 #define CRYPTONOTE_BLOCKCHAINDATA_FILENAME      "data.mdb"
 #define CRYPTONOTE_BLOCKCHAINDATA_LOCK_FILENAME "lock.mdb"
 #define P2P_NET_DATA_FILENAME                   "p2pstate.bin"
@@ -236,7 +236,7 @@ namespace config
   uint16_t const ZMQ_RPC_DEFAULT_PORT = 19092;
   boost::uuids::uuid const NETWORK_ID = { {
       0xBA, 0x77, 0x1E, 0x60, 0x42, 0x47, 0x42, 0x47, 0x42, 0x47, 0x42, 0x47, 0x42, 0x47, 0x42, 0x47
-    } }; // Battleground mainnet
+    } }; // ZillHa Shards mainnet
   std::string const GENESIS_TX = "013c01ff0001ffffffffffff03029b2e4c0281c0b02e7c53291a94d1d0cbff8883f8024f5142ee494ffbbd08807121017767aafcde9be00dcfd098715ebcf7f410daebc582fda69d24a28e9d0bc890d1";
   uint32_t const GENESIS_NONCE = 20260423;
 
@@ -260,7 +260,7 @@ namespace config
   const unsigned char HASH_KEY_CLSAG_ROUND[] = "CLSAG_round";
   const unsigned char HASH_KEY_CLSAG_AGG_0[] = "CLSAG_agg_0";
   const unsigned char HASH_KEY_CLSAG_AGG_1[] = "CLSAG_agg_1";
-  const char HASH_KEY_MESSAGE_SIGNING[] = "BattlegroundMessageSignature";
+  const char HASH_KEY_MESSAGE_SIGNING[] = "ZillHaShardsMessageSignature";
   const unsigned char HASH_KEY_MM_SLOT = 'm';
   const constexpr char HASH_KEY_MULTISIG_TX_PRIVKEYS_SEED[] = "multisig_tx_privkeys_seed";
   const constexpr char HASH_KEY_MULTISIG_TX_PRIVKEYS[] = "multisig_tx_privkeys";
@@ -279,7 +279,7 @@ namespace config
     uint16_t const ZMQ_RPC_DEFAULT_PORT = 29092;
     boost::uuids::uuid const NETWORK_ID = { {
         0xBA, 0x77, 0x1E, 0x60, 0x42, 0x47, 0x42, 0x47, 0x42, 0x47, 0x42, 0x47, 0x42, 0x47, 0x42, 0x48
-      } }; // Battleground testnet
+      } }; // ZillHa Shards testnet
     std::string const GENESIS_TX = "013c01ff0001ffffffffffff03029b2e4c0281c0b02e7c53291a94d1d0cbff8883f8024f5142ee494ffbbd08807121017767aafcde9be00dcfd098715ebcf7f410daebc582fda69d24a28e9d0bc890d1";
     uint32_t const GENESIS_NONCE = 20260424;
   }
@@ -294,7 +294,7 @@ namespace config
     uint16_t const ZMQ_RPC_DEFAULT_PORT = 39092;
     boost::uuids::uuid const NETWORK_ID = { {
         0xBA, 0x77, 0x1E, 0x60, 0x42, 0x47, 0x42, 0x47, 0x42, 0x47, 0x42, 0x47, 0x42, 0x47, 0x42, 0x49
-      } }; // Battleground stagenet
+      } }; // ZillHa Shards stagenet
     std::string const GENESIS_TX = "013c01ff0001ffffffffffff0302df5d56da0c7d643ddd1ce61901c7bdc5fb1738bfe39fbe69c28a3a7032729c0f2101168d0c4ca86fb55a4cf6a36d31431be1c53a3bd7411bb24e8832410289fa6f3b";
     uint32_t const GENESIS_NONCE = 20260425;
   }
