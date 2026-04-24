@@ -323,10 +323,14 @@ TEST(ban, subnet)
     Server::init_options(opts);
     cryptonote::core::init_options(opts);
 
-    char** args = nullptr;
+    // boost::program_options::parse_command_line(0, nullptr, ...) triggers
+    // "cannot create std::vector larger than max_size()" under boost 1.74+
+    // due to an unsigned-int underflow inside command_line_parser. Pass a
+    // valid dummy argv so the store() path uses default values cleanly.
+    const char *argv_[] = {"unit_tests", nullptr};
     boost::program_options::variables_map vm;
     boost::program_options::store(
-      boost::program_options::parse_command_line(0, args, opts), vm
+      boost::program_options::parse_command_line(1, argv_, opts), vm
     );
     server.init(vm);
   }
