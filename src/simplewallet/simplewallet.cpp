@@ -2559,15 +2559,15 @@ bool simple_wallet::set_unit(const std::vector<std::string> &args/* = std::vecto
   unsigned int decimal_point = CRYPTONOTE_DISPLAY_DECIMAL_POINT;
 
   if (unit == "shard")
-    decimal_point = CRYPTONOTE_DISPLAY_DECIMAL_POINT;
+    decimal_point = 13;
   else if (unit == "millishard")
-    decimal_point = CRYPTONOTE_DISPLAY_DECIMAL_POINT - 3;
+    decimal_point = 12;
   else if (unit == "microshard")
-    decimal_point = CRYPTONOTE_DISPLAY_DECIMAL_POINT - 6;
+    decimal_point = 9;
   else if (unit == "nanoshard")
-    decimal_point = CRYPTONOTE_DISPLAY_DECIMAL_POINT - 9;
+    decimal_point = 6;
   else if (unit == "picoshard")
-    decimal_point = CRYPTONOTE_DISPLAY_DECIMAL_POINT - 12;
+    decimal_point = 3;
   else if (unit == "zest")
     decimal_point = 0;
   else
