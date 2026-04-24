@@ -94,6 +94,13 @@ namespace cryptonote {
          ((60 / DIFFICULTY_TARGET_V2) & (60 / DIFFICULTY_TARGET_V2 - 1)) == 0),
         "V2 difficulty target must be a multiple of 60, or a sub-minute "
         "divisor of 60 with blocks-per-minute a power of 2 (60, 30, 15s)");
+    // Sub-minute branch divides FINAL_SUBSIDY_PER_MINUTE by blocks_per_minute
+    // using integer division; enforce exact divisibility so per-minute tail
+    // emission is preserved without truncation.
+    static_assert(DIFFICULTY_TARGET_V2 >= 60 ||
+                  FINAL_SUBSIDY_PER_MINUTE % (60 / DIFFICULTY_TARGET_V2) == 0,
+                  "FINAL_SUBSIDY_PER_MINUTE must be divisible by blocks-per-minute "
+                  "for the sub-minute tail-floor calculation to be exact");
     const int target = version < 2 ? DIFFICULTY_TARGET_V1 : DIFFICULTY_TARGET_V2;
 
     int emission_speed_factor;
