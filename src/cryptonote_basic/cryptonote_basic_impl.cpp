@@ -81,10 +81,19 @@ namespace cryptonote {
   }
   //-----------------------------------------------------------------------------------------------
   bool get_block_reward(size_t median_weight, size_t current_block_weight, uint64_t already_generated_coins, uint64_t &reward, uint8_t version) {
-    static_assert(DIFFICULTY_TARGET_V1 % 60 == 0,
-                  "V1 difficulty target must be a multiple of 60");
-    static_assert(DIFFICULTY_TARGET_V2 == 30 || DIFFICULTY_TARGET_V2 % 60 == 0,
-                  "V2 difficulty target must be 30 or a multiple of 60");
+    // Sub-minute targets use bit-shifts on (60 / target), so 60 must be
+    // divisible by the target AND the resulting blocks-per-minute must be a
+    // power of two. Otherwise emission rate would silently drift from the
+    // per-minute invariant. Targets >= 60s must be whole minutes for the
+    // symmetric reason (target_minutes used as a shift/multiplier).
+    static_assert(DIFFICULTY_TARGET_V1 >= 60 && DIFFICULTY_TARGET_V1 % 60 == 0,
+                  "V1 difficulty target must be a positive multiple of 60");
+    static_assert(
+        (DIFFICULTY_TARGET_V2 >= 60 && DIFFICULTY_TARGET_V2 % 60 == 0) ||
+        (DIFFICULTY_TARGET_V2 > 0 && 60 % DIFFICULTY_TARGET_V2 == 0 &&
+         ((60 / DIFFICULTY_TARGET_V2) & (60 / DIFFICULTY_TARGET_V2 - 1)) == 0),
+        "V2 difficulty target must be a multiple of 60, or a sub-minute "
+        "divisor of 60 with blocks-per-minute a power of 2 (60, 30, 15s)");
     const int target = version < 2 ? DIFFICULTY_TARGET_V1 : DIFFICULTY_TARGET_V2;
 
     int emission_speed_factor;
