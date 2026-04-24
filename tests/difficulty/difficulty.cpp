@@ -42,7 +42,7 @@
 
 using namespace std;
 
-#define DEFAULT_TEST_DIFFICULTY_TARGET        120
+#define DEFAULT_TEST_DIFFICULTY_TARGET        30
 
 static int test_wide_difficulty(const char *filename)
 {
