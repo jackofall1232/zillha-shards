@@ -1114,10 +1114,11 @@ namespace cryptonote
   {
     switch (decimal_point)
     {
-      case 12:
-      case 9:
-      case 6:
-      case 3:
+      case 13:
+      case 10:
+      case 7:
+      case 4:
+      case 1:
       case 0:
         default_decimal_point = decimal_point;
         break;
