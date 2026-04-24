@@ -235,8 +235,8 @@ namespace config
   uint16_t const RPC_DEFAULT_PORT = 19091;
   uint16_t const ZMQ_RPC_DEFAULT_PORT = 19092;
   boost::uuids::uuid const NETWORK_ID = { {
-      0xBA, 0x77, 0x1E, 0x60, 0x42, 0x47, 0x42, 0x47, 0x42, 0x47, 0x42, 0x47, 0x42, 0x47, 0x42, 0x47
-    } }; // ZillHa Shards mainnet
+      0x5A, 0x49, 0x4C, 0x4C, 0x48, 0x41, 0x53, 0x48, 0x41, 0x52, 0x44, 0x53, 0x00, 0x00, 0x00, 0x01
+    } }; // "ZILLHASHARDS" + mainnet discriminator
   std::string const GENESIS_TX = "013c01ff0001ffffffffffff03029b2e4c0281c0b02e7c53291a94d1d0cbff8883f8024f5142ee494ffbbd08807121017767aafcde9be00dcfd098715ebcf7f410daebc582fda69d24a28e9d0bc890d1";
   uint32_t const GENESIS_NONCE = 20260423;
 
@@ -278,8 +278,8 @@ namespace config
     uint16_t const RPC_DEFAULT_PORT = 29091;
     uint16_t const ZMQ_RPC_DEFAULT_PORT = 29092;
     boost::uuids::uuid const NETWORK_ID = { {
-        0xBA, 0x77, 0x1E, 0x60, 0x42, 0x47, 0x42, 0x47, 0x42, 0x47, 0x42, 0x47, 0x42, 0x47, 0x42, 0x48
-      } }; // ZillHa Shards testnet
+        0x5A, 0x49, 0x4C, 0x4C, 0x48, 0x41, 0x53, 0x48, 0x41, 0x52, 0x44, 0x53, 0x00, 0x00, 0x00, 0x02
+      } }; // "ZILLHASHARDS" + testnet discriminator
     std::string const GENESIS_TX = "013c01ff0001ffffffffffff03029b2e4c0281c0b02e7c53291a94d1d0cbff8883f8024f5142ee494ffbbd08807121017767aafcde9be00dcfd098715ebcf7f410daebc582fda69d24a28e9d0bc890d1";
     uint32_t const GENESIS_NONCE = 20260424;
   }
@@ -293,8 +293,8 @@ namespace config
     uint16_t const RPC_DEFAULT_PORT = 39091;
     uint16_t const ZMQ_RPC_DEFAULT_PORT = 39092;
     boost::uuids::uuid const NETWORK_ID = { {
-        0xBA, 0x77, 0x1E, 0x60, 0x42, 0x47, 0x42, 0x47, 0x42, 0x47, 0x42, 0x47, 0x42, 0x47, 0x42, 0x49
-      } }; // ZillHa Shards stagenet
+        0x5A, 0x49, 0x4C, 0x4C, 0x48, 0x41, 0x53, 0x48, 0x41, 0x52, 0x44, 0x53, 0x00, 0x00, 0x00, 0x03
+      } }; // "ZILLHASHARDS" + stagenet discriminator
     std::string const GENESIS_TX = "013c01ff0001ffffffffffff0302df5d56da0c7d643ddd1ce61901c7bdc5fb1738bfe39fbe69c28a3a7032729c0f2101168d0c4ca86fb55a4cf6a36d31431be1c53a3bd7411bb24e8832410289fa6f3b";
     uint32_t const GENESIS_NONCE = 20260425;
   }
