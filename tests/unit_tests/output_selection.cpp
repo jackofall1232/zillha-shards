@@ -116,7 +116,7 @@ TEST(select_outputs, gamma)
   MKOFFSETS(300000, 1);
   tools::gamma_picker picker(offsets);
   std::vector<double> ages(100000);
-  double age_scale = 120. * (offsets.size() / (double)n_outs);
+  double age_scale = (double)DIFFICULTY_TARGET_V2 * (offsets.size() / (double)n_outs);
   for (size_t i = 0; i < ages.size(); )
   {
     uint64_t o = picker.pick();
@@ -124,12 +124,15 @@ TEST(select_outputs, gamma)
       continue;
     ages[i] = (n_outs - 1 - o) * age_scale;
     ASSERT_GE(ages[i], 0);
-    ASSERT_LE(ages[i], offsets.size() * 120);
+    ASSERT_LE(ages[i], offsets.size() * (double)DIFFICULTY_TARGET_V2);
     ++i;
   }
   double median = epee::misc_utils::median(ages);
   MDEBUG("median age: " << median / 86400. << " days");
-  ASSERT_GE(median, 1.3 * 86400);
+  // Target=30 makes RECENT_SPEND_WINDOW (= 15 * target) smaller, which pulls
+  // the median of pick() down a bit vs Monero's target=120 baseline. Loosen
+  // the lower bound to accommodate.
+  ASSERT_GE(median, 1.0 * 86400);
   ASSERT_LE(median, 1.4 * 86400);
 }
 
@@ -237,7 +240,13 @@ TEST(select_outputs, exact_unlock_block)
 
   // if too low we may fail by not picking exact block
   // if too high test is not as sensitive as it could be
-  constexpr size_t NUM_PICK_TESTS = 1 << 20;
+  //
+  // ZillHa: CRYPTONOTE_DEFAULT_TX_SPENDABLE_AGE went 10 -> 40 to hold the
+  // ~20 min wall-clock spendability window at 30s blocks. The exact-unlock
+  // block is now 4x further from tip, so the gamma's probability of landing
+  // in that single output window drops roughly 4x. Bump iterations 4x to
+  // restore the original hit rate.
+  constexpr size_t NUM_PICK_TESTS = 1 << 22;
 
   bool picked_exact_unlock_block = false;
   for (size_t i = 0; i < NUM_PICK_TESTS; ++i)

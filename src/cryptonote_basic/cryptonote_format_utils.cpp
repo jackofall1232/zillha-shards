@@ -1114,6 +1114,7 @@ namespace cryptonote
   {
     switch (decimal_point)
     {
+      case 13:
       case 12:
       case 9:
       case 6:
@@ -1137,16 +1138,18 @@ namespace cryptonote
       decimal_point = default_decimal_point;
     switch (decimal_point)
     {
+      case 13:
+        return "shard";
       case 12:
-        return "battleground";
+        return "millishard";
       case 9:
-        return "milliground";
+        return "microshard";
       case 6:
-        return "microground";
+        return "nanoshard";
       case 3:
-        return "nanoground";
+        return "picoshard";
       case 0:
-        return "picoground";
+        return "zest";
       default:
         ASSERT_MES_AND_THROW("Invalid decimal point specification: " << decimal_point);
     }
